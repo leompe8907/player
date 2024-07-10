@@ -345,7 +345,7 @@ var cv = {
       console.log(result);
       successCallback(result.answer);
     }, function (result) {
-      console.log("ERROR getAds");
+      console.log("No entre");
       console.log(result);
       errorCallback();
     });

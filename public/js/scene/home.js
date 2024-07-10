@@ -245,6 +245,9 @@ Scene_Home = (function (Scene) {
         case 5:
           this.getDataForAds();
           break;
+        case 6:
+          this.getDataForMails();
+          break;
       }
 
     },
@@ -326,9 +329,19 @@ Scene_Home = (function (Scene) {
 
     getDataForAds: function () {
       var self = this;
-      this.updateStepLoad(5);
+      this.updateStepLoad(6);
       AppData.getAds(function (ads) {
         self.showAds(ads);
+        self.allDataLoaded();
+        console.log(self)
+      })
+    },
+
+    getDataForMails: function () {
+      var self = this
+      this.updateStepLoad(5);
+      AppData.getMails(function (mails) {
+        self.showMails(mails)
         self.allDataLoaded();
       })
     },
@@ -392,6 +405,11 @@ Scene_Home = (function (Scene) {
             break;
           }
       })*/
+    },
+
+    showMails: function (mails) {
+      var self = this;
+      var mail = {}
     },
 
     allDataLoaded: function () {

@@ -147,7 +147,7 @@ AppData = (function (Events) {
           self.vodCategories = self.vodCategories.concat(groups.categories);
         });
 
-        var vodRecommended = library.categoryGroups != null ? library.categoryGroups.filter(function (item) { return item.type == 6; }) : [];
+        var vodRecommended = library.categoryGroups != null ? library.categoryGroups.filter(function (item) { return item.type === 6; }) : [];
         if (vodRecommended.length > 0) {
           self.vodRecommendedId = vodRecommended[0].id
         }
@@ -163,7 +163,7 @@ AppData = (function (Events) {
       }, function () {
         callback([]);
       });
-
+      console.log(typeof(this.vodRecommended))
     },
 
     callGetVODContent: function (offset, allVods, callback) {
@@ -875,14 +875,14 @@ AppData = (function (Events) {
 
     getMails: function (callback){
       cv.getMails(function (data) {
+        console.log("Entre");
         console.log(data);
-        console.log("=========================================");
-        var mails = data
+        var mails = data.filter(function (mail) { return mail.targetKey == "html5"; })
         callback(mails)
         console.log(mails);
       }, function () {
+        console.log("no entre");
         console.log("ERROR");
-        console.log("=========================================");
         callback([])
       });
     },
