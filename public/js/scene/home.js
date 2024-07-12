@@ -183,7 +183,7 @@ Scene_Home = (function (Scene) {
               console.error("Error retrieving mails: ", error);
               self.mailsString = "<p>Error retrieving mails: " + error + ". Please try again later.</p>";
             } else if (mails.length === 0) {
-              self.mailsString = "<p>No mails available.</p>";
+              self.mailsString = "<p>" + __("MailsEmpty") + "</p>";
             } else {
               self.mailsString = "<div>"; // Inicializa mailsString como un div
               mails.forEach(function (mail) {

@@ -70,6 +70,8 @@ I18n.translations.ES = {
   "AboutCard": "Tarjeta", //about.textView.smartcardTitle
   "AboutDevelopedBy": "Desarrollado por",
 
+  "MailsEmpty":"No tienes mensajes nuevo",
+
   "MenuServicesTVAndRadio": "TV and radio services", //menu_services
   "MenuEPG": "EPG", //menu_epg
   "MenuEPGDescription": "Ir a EPG",
