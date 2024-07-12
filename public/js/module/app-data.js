@@ -882,7 +882,6 @@ AppData = (function (Events) {
         console.log(mails);
       }, function () {
         console.log("no entre");
-        console.log("ERROR");
         callback([])
       });
     },

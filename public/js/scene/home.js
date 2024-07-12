@@ -20,6 +20,7 @@ Scene_Home = (function (Scene) {
       this.firstLaunch = true;
       this.dontRedraw = false;
       this.aboutString = "";
+      this.mailsString = "";
       this.timeIntervalApp = null; //by minute
       this.currentVodCategoryId = 0;
       this.nbPlayerAttempts = 0;
@@ -47,6 +48,7 @@ Scene_Home = (function (Scene) {
       this.$el.find("#menuAboutLabel").html(__("MenuAbout"));
       this.$el.find("#menuLogoutLabel").html(__("MenuLogout"));
       this.$el.find("#menuExitLabel").html(__("MenuExit"));
+      this.$el.find("#menuMailsLabel").html(__("MenuMails"));
       this.$el.find("#menuUpdateDataLabel").html(__("MenuUpdateData"));
       $(".epg-message").html(__("EPGLoading"));
       EPG.homeObject = this;
@@ -158,6 +160,7 @@ Scene_Home = (function (Scene) {
         this.firstLaunch = true;
       }
       this.aboutString = "";
+      this.mailsString = "";
 
       if (User.hasCredentials() && User.isLicenseActivated()) {
         this.aboutString = "<table>"
@@ -174,28 +177,48 @@ Scene_Home = (function (Scene) {
           + "<td>" + __("AboutDevelopedBy") + ":</td><td>" + CONFIG.app.developedBy + "</td>"
           + "</tr>";
 
-        if (!this.dontRedraw) {
-          this.clearData();
-        } else {
-          if (this.playbackMetadata.id != null) {
-            this.forcePlayback = true;
-            this.autoSeek = true;
-            this.lastPlaybackTime -= 1;
-            this.playContentWithAccess(this.playbackMetadata.type, this.playbackMetadata.id, this.playbackMetadata.url, this.playbackMetadata.item, true, false);
-          }
-        }
-        this.getHomeData();
-      } else if (User.hasCredentials()) {
-        //activate license
-        App.throbberHide();
-        App.notification(__("Scene_Home"));
-      } else {
-        //login
-        App.throbberHide();
-        App.notification(__("Scene_Home"));
-      }
+          var self = this;
+          this.getDataForMails(function (error, mails) {
+            if (error) {
+              console.error("Error retrieving mails: ", error);
+              self.mailsString = "<p>Error retrieving mails: " + error + ". Please try again later.</p>";
+            } else if (mails.length === 0) {
+              self.mailsString = "<p>No mails available.</p>";
+            } else {
+              self.mailsString = "<div>"; // Inicializa mailsString como un div
+              mails.forEach(function (mail) {
+                self.mailsString += '<div class="mail-item">';
+                self.mailsString += '<h3>' + mail.subject + '</h3>';
+                self.mailsString += '<p><strong>From:</strong> ' + mail.from + '</p>';
+                self.mailsString += '<p><strong>Date:</strong> ' + mail.created + '</p>';
+                self.mailsString += '<p>' + mail.message + '</p>';
+                self.mailsString += '</div>';
+              });
+            }
+          });
 
-    },
+          if (!this.dontRedraw) {
+            this.clearData();
+          } else {
+            if (this.playbackMetadata.id != null) {
+              this.forcePlayback = true;
+              this.autoSeek = true;
+              this.lastPlaybackTime -= 1;
+              this.playContentWithAccess(this.playbackMetadata.type, this.playbackMetadata.id, this.playbackMetadata.url, this.playbackMetadata.item, true, false);
+            }
+          }
+          this.getHomeData();
+        }
+        else if (User.hasCredentials()) {
+          //activate license
+          App.throbberHide();
+          App.notification(__("Scene_Home"));
+        } else {
+          //login
+          App.throbberHide();
+          App.notification(__("Scene_Home"));
+        }
+      },
 
     clearData: function () {
       AppData.clearData();
@@ -324,24 +347,15 @@ Scene_Home = (function (Scene) {
         self.setVODContent(categories);
 
         self.getDataForAds();
+        self.getDataForMails();
       });
     },
 
     getDataForAds: function () {
       var self = this;
-      this.updateStepLoad(6);
+      this.updateStepLoad(5);
       AppData.getAds(function (ads) {
         self.showAds(ads);
-        self.allDataLoaded();
-        console.log(self)
-      })
-    },
-
-    getDataForMails: function () {
-      var self = this
-      this.updateStepLoad(5);
-      AppData.getMails(function (mails) {
-        self.showMails(mails)
         self.allDataLoaded();
       })
     },
@@ -376,41 +390,53 @@ Scene_Home = (function (Scene) {
       contenedorPosicion.classList.remove('ocultarPublicidad');
     },
 
-    showAds: function (ads) {
-      var self = this;
-      var imagesTop = [];
-      var imagesBot = [];
-      var imagesIzquierda = [];
-      var imagesDerecha = [];
+		showAds: function(ads){
+			var self = this;
+			var imagesTop = [];
+			var imagesBot = [];
 
-      /*
-      //Please refactor the following code to avoid issues with LG (old versions)
-      ads.map(ad => {
-        switch (ad.locationKey) {
-          case 'home':
-            imagesTop.push(ad.advertFile);
-            self.agregarPublicidad('publicidadTop', imagesTop);
-            break;
-          case 'home_bottom':
-            imagesBot.push(ad.advertFile);
-            self.agregarPublicidad('publicidadBot', imagesBot);
-            break;
-          case 'home_lateral_left':
-            imagesIzquierda.push(ad.advertFile);
-            self.agregarPublicidad('publicidadIzquierda', imagesIzquierda);
-            break;
-          case 'home_lateral_right':
-            imagesDerecha.push(ad.advertFile);
-            self.agregarPublicidad('publicidadDerecha', imagesDerecha);
-            break;
+			ads.map(ad => {
+				if(ad.locationKey == 'home') {
+					imagesTop.push(ad.advertFile);
+				} else if(ad.locationKey == 'home_bottom') {
+					imagesBot.push(ad.advertFile);
+				}
+			})
+
+			if(imagesTop.length > 0 || imagesBot.length > 0) {
+				var containerImages = [imagesTop, imagesBot];
+				var containerPositions = ['publicidadTop', 'publicidadBot'];
+				for (var i = 0; i < 2; i++) {
+					self.agregarPublicidad(containerPositions[i], containerImages[i]);
+				}
+			}
+		},
+
+    getDataForMails: function (callback) {
+      var self = this;
+      this.updateStepLoad(6);
+
+      AppData.getMails(function (response) {
+        if (response.success === false) {
+          if (typeof callback === 'function') {
+            callback(response.errorMessage || "Unknown error occurred");
           }
-      })*/
+        } else if (!response.mails || response.mails.length === 0) {
+          if (typeof callback === 'function') {
+            callback(null, []);
+          }
+        } else {
+          self.showMails(response.mails);
+          self.allDataLoaded();
+          if (typeof callback === 'function') {
+            callback(null, response.mails);
+          }
+        }
+      });
     },
 
-    showMails: function (mails) {
-      var self = this;
-      var mail = {}
-    },
+
+
 
     allDataLoaded: function () {
       this.requestingData = false;
@@ -480,6 +506,9 @@ Scene_Home = (function (Scene) {
               break;
             case 3: //logout
               this.setMenuTitle(__("MenuLogout"));
+              break;
+            case 4: //mails
+              this.setMenuTitle(__("MenuMails"));
               break;
           }
         }
@@ -692,6 +721,9 @@ Scene_Home = (function (Scene) {
             case 4: //exit
               this.$lastFocused = Focus.focused;
               this.$el.showAlertConfirm(__("AppCloseApp"), 'close_app', null, null, 'cancel');
+              break;
+            case 5: //mails
+              this.$el.showAlertMessage(this.mailsString, "menuMails", __("SettingsCloseButton").toUpperCase());
               break;
           }
         }

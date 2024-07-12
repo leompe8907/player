@@ -78,6 +78,7 @@ I18n.translations.ES = {
   "MenuAbout": "Acerca de", //about.textView.title
   "MenuLogout": "Cerrar sesión", //menu_logout
   "MenuExit": "Salir",
+  "MenuMails":"Mails",
   "MenuUpdateData": "Actualizar datos",
   "MenuUpdateDataDescription": "Actualizar datos",
   "MenuTitle": "Otros",

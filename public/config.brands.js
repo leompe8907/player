@@ -11,8 +11,8 @@ var CONFIG_BRANDS = [
   {
     brand: "bromteck",
     appName: "Bromteck",
-    drm: "https://cv10.panaccess.com/",
-    token: "ekMIItbwRqfRWfdSTkwL",
+    drm: "https://cv01.panaccess.com/",
+    token: "gQposTlrMIOYQVdYBNYC",
     logoPositionHome: "top",
     showTime: true,
     epgLineColorTime: "#2CE308",
