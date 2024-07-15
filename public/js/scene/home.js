@@ -178,24 +178,6 @@ Scene_Home = (function (Scene) {
           + "</tr>";
 
           var self = this;
-          this.getDataForMails(function (error, mails) {
-            if (error) {
-              console.error("Error retrieving mails: ", error);
-              self.mailsString = "<p>Error retrieving mails: " + error + ". Please try again later.</p>";
-            } else if (mails.length === 0) {
-              self.mailsString = "<p>" + __("MailsEmpty") + "</p>";
-            } else {
-              self.mailsString = "<div>"; // Inicializa mailsString como un div
-              mails.forEach(function (mail) {
-                self.mailsString += '<div class="mail-item">';
-                self.mailsString += '<h3>' + mail.subject + '</h3>';
-                self.mailsString += '<p><strong>From:</strong> ' + mail.from + '</p>';
-                self.mailsString += '<p><strong>Date:</strong> ' + mail.created + '</p>';
-                self.mailsString += '<p>' + mail.message + '</p>';
-                self.mailsString += '</div>';
-              });
-            }
-          });
 
           if (!this.dontRedraw) {
             this.clearData();
@@ -416,26 +398,48 @@ Scene_Home = (function (Scene) {
       var self = this;
       this.updateStepLoad(6);
 
-      AppData.getMails(function (response) {
-        if (response.success === false) {
-          if (typeof callback === 'function') {
-            callback(response.errorMessage || "Unknown error occurred");
-          }
-        } else if (!response.mails || response.mails.length === 0) {
-          if (typeof callback === 'function') {
-            callback(null, []);
-          }
+      AppData.getMails(function (error, mails) {
+        if (error) {
+          console.error("Error retrieving mails:", error);
+          self.mailsString = "<p>Error retrieving mails: " + error.message + ". Please try again later.</p>";
+          callback();
         } else {
-          self.showMails(response.mails);
-          self.allDataLoaded();
-          if (typeof callback === 'function') {
-            callback(null, response.mails);
-          }
+          const filteredMails = self.filterMails(mails);
+          self.formatMails(filteredMails);
+          callback();
         }
       });
     },
 
+    filterMails: function (emails) {
+      const currentDate = new Date();
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(currentDate.getMonth() - 1);
 
+      return emails.filter(email => {
+        const emailDate = new Date(email.time);
+        return emailDate >= oneMonthAgo && emailDate <= currentDate;
+      }).map(email => ({
+        message: email.message,
+        time: email.time
+      }));
+    },
+
+    formatMails: function (mails) {
+      if (mails.length === 0) {
+        this.mailsString = "<p>" + __("MailsEmpty") + "</p>";
+      } else {
+        this.mailsString = "<div>"; // Inicializa mailsString como un div
+        mails.forEach(mail => {
+          this.mailsString += `
+            <div class="mail-item">
+              <p><strong>Date:</strong> ${mail.time}</p>
+              <p>${mail.message}</p>
+            </div>`;
+        });
+        this.mailsString += "</div>"; // Cerrar el div
+      }
+    },
 
 
     allDataLoaded: function () {

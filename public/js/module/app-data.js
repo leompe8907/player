@@ -873,16 +873,18 @@ AppData = (function (Events) {
       });
     },
 
-    getMails: function (callback){
-      cv.getMails(function (data) {
-        console.log("Entre");
-        console.log(data);
-        var mails = data.filter(function (mail) { return mail.targetKey == "html5"; })
-        callback(mails)
-        console.log(mails);
-      }, function () {
-        console.log("no entre");
-        callback([])
+    getMails: function (callback) {
+      cv.getMails((data) => {
+        if (Array.isArray(data)) {
+          console.log("Data received successfully:", data);
+          callback(null, data);  // Devolvemos los datos sin filtrar
+        } else {
+          console.error("Unexpected data format:", data);
+          callback(new Error("Unexpected data format"), []);
+        }
+      }, (error) => {
+        console.error("Failed to retrieve mails:", error);
+        callback(error, []);
       });
     },
 

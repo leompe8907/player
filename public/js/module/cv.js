@@ -340,7 +340,7 @@ var cv = {
     var udid = getUdid();
     var sessionId = User.getSessionId();
 
-    this.get_result_post({f:"getMails" ,sessionId: sessionId,udid: udid,lastKnownId: -1,os: this.loginParamOS,appVersion: this.appVersion,branding: this.branding}, '', function (result) {
+    this.get_result_post({f:"getOsms" ,sessionId: sessionId,udid: udid,lastKnownId: -1,os: this.loginParamOS,appVersion: this.appVersion,branding: this.branding}, '', function (result) {
       console.log("SUCCESS getMails");
       console.log(result);
       successCallback(result.answer);
