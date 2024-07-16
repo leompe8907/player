@@ -70,6 +70,8 @@ I18n.translations.EN = {
   "AboutCard": "Smartcard", //about.textView.smartcardTitle
   "AboutDevelopedBy": "Developed by",
 
+  "MailsEmpty":"",
+
   "MenuServicesTVAndRadio": "TV and radio services", //menu_services
   "MenuEPG": "EPG", //menu_epg
   "MenuEPGDescription": "Go to EPG",
@@ -78,6 +80,7 @@ I18n.translations.EN = {
   "MenuAbout": "About", //about.textView.title
   "MenuLogout": "Logout", //menu_logout
   "MenuExit": "Exit",
+  "MenuMails":"Mails",
   "MenuUpdateData": "Update data",
   "MenuUpdateDataDescription": "Update data",
   "MenuTitle": "Other",

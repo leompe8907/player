@@ -70,6 +70,8 @@ I18n.translations.PT = {
   "AboutCard": "Cartão", //about.textView.smartcardTitle
   "AboutDevelopedBy": "Desenvolvido por",
 
+  "MailsEmpty":"",
+
   "MenuServicesTVAndRadio": "Serviços de TV e rádio", //menu_services
   "MenuEPG": "EPG", //menu_epg
   "MenuEPGDescription": "Ir para EPG",
@@ -78,6 +80,7 @@ I18n.translations.PT = {
   "MenuAbout": "Sobre", //about.textView.title
   "MenuLogout": "Sair", //menu_logout
   "MenuExit": "Sair",
+  "MenuMails":"Mails",
   "MenuUpdateData": "Atualizar dados",
   "MenuUpdateDataDescription": "Atualizar dados",
   "MenuTitle": "Outros",

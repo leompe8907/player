@@ -70,6 +70,8 @@ I18n.translations.HU = {
   "AboutCard": "Kártya", //about.textView.smartcardTitle
   "AboutDevelopedBy": "Fejlesztette",
 
+  "MailsEmpty":"",
+
   "MenuServicesTVAndRadio": "TV- és rádiós szolgáltatások", //menu_services
   "MenuEPG": "EPG", //menu_epg
   "MenuEPGDescription": "Ugrás az EPG-re",
@@ -78,6 +80,7 @@ I18n.translations.HU = {
   "MenuAbout": "Névjegy", //about.textView.title
   "MenuLogout": "Kijelentkezés", //menu_logout
   "MenuExit": "Kilépés",
+  "MenuMails":"Mails",
   "MenuUpdateData": "Adatok frissítése",
   "MenuUpdateDataDescription": "Adatok frissítése",
   "MenuTitle": "Egyéb",

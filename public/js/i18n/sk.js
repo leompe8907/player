@@ -70,6 +70,8 @@ I18n.translations.SK = {
   "AboutCard": "Karta", //about.textView.smartcardTitle
   "AboutDevelopedBy": "Vyvinuté od",
 
+  "MailsEmpty":"",
+
   "MenuServicesTVAndRadio": "TV a rádio služby", //menu_services
   "MenuEPG": "EPG", //menu_epg
   "MenuEPGDescription": "Prejsť na EPG",
@@ -78,6 +80,7 @@ I18n.translations.SK = {
   "MenuAbout": "O aplikácii", //about.textView.title
   "MenuLogout": "Odhlásiť sa", //menu_logout
   "MenuExit": "Ukončiť",
+  "MenuMails":"Mails",
   "MenuUpdateData": "Aktualizovať údaje",
   "MenuUpdateDataDescription": "Aktualizovať údaje",
   "MenuTitle": "Iné",
