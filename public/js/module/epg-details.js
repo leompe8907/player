@@ -53,27 +53,27 @@ EPGDetails = (function (Events) {
 
     getHtmlDialogEpgDetails: function () {
       return '<div class="modal fade alerts nb-alert epg-dialog-details" role="dialog">'
-        + '<div class="modal-dialog modal-center">'
-        + '<div class="modal-content">'
+        + '<div class="modal-dialog modal-center" style="width: 80%; height: 50em;">'
+        + '<div class="modal-content" style="height: 100%;">'
         + '<div class="modal-body">'
         + '<row>'
-        + '<div class="col-sm-3 no-padding"><img class="epg-dialog-details-img" src="" alt="" ></div>'
-        + '<div class="col-sm-8 epg-dialog-details-header-info">'
+        + '<div class="col-sm-3 no-padding"><img class="epg-dialog-details-img" src="" alt=""></div>'
+        + '<div class="col-sm-8 epg-dialog-details-header-info" style="height: 15em;">'
 
-        + '<div class="channel-lcn-name" style="align-items: center;">'
-        + '<div><span class="label label-default epg-dialog-details-header-lcn" style="font-size: 1.2em; margin-right: 0.4em;"></span></div>'
-        + '<h3 class="epg-dialog-details-header-channel"></h3>'
+        + '<div class="channel-lcn-name" style="align-items: center; height: 10em;">'
+        + '<div><span class="label label-default epg-dialog-details-header-lcn" style="font-size: 2.2em; margin-right: 0.4em;"></span></div>'
+        + '<h3 class="epg-dialog-details-header-channel" style="font-size: 2em;"></h3>'
         + '</div>'
 
-        + '<p class="epg-dialog-details-header-time"></p>'
-        + '<p class="epg-dialog-details-header-duration"></p>'
+        + '<p class="epg-dialog-details-header-time" style="height: 5em; font-size: 2em;"></p>'
+        + '<p class="epg-dialog-details-header-duration" style="height: 5em; font-size: 2em;"></p>'
         + '</div>'
         + '<div class="col-sm-1">'
         + '<div class="nb-icon-button focusable nb-icon-star epg-dialog-details-header-fav"></div>'
         + '</div>'
         + '</row>'
-        + '<row><h3 class="font-bold epg-dialog-details-title"></h3></row>'
-        + '<row><p class="epg-dialog-details-description"></p></row>'
+        + '<row><h3 class="font-bold epg-dialog-details-title" style="font-size: 2em;"></h3></row>'
+        + '<row><div class="epg-dialog-details-description" style="font-size: 2em; height: 10em; overflow-y: auto;"></div></row>'
         + '</div>'
         + '<div class="modal-footer">'
         + '<button type="button" class="btn-default btn-lg focusable epg-dialog-record hidden" data-parent-type="message">' + __("CatchupRecordButton") + '</button>'
@@ -85,6 +85,8 @@ EPGDetails = (function (Events) {
         + '</div>'
         + '</div>';
     },
+
+
 
     show: function ($container, metadata, homeObject, $lastFocused) {
       this.refreshElReferences($container);
@@ -184,7 +186,7 @@ EPGDetails = (function (Events) {
       this.$lcn.text(lcn);
       this.$channelName.text(channelName);
 
-      // check if favorited 
+      // check if favorited
       this.$favButton.addClass("nb-icon-star");
       this.$favButton.removeClass("nb-icon-star-fill");
       var favIndex = User.hasServiceTVFavorited(lcn);

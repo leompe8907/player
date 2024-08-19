@@ -1185,10 +1185,22 @@ Scene_Home = (function (Scene) {
       var config = Storage.get("cvClientConfig");
       var objetoConfig = JSON.parse(config);
       var cdnServers = objetoConfig.cdnServers[3].urls[1];
+      var date = new Date(dateString);
+      var year = date.getFullYear();
+      var month = ('0' + (date.getMonth() + 1)).slice(-2);
+      var day = ('0' + date.getDate()).slice(-2);
 
       events.forEach(function (event, index, array) {
         var src
-        if (event.imageUrl != null || event.imageUrl != "null" || event.imageUrl != "") {
+        var serviceTV = AppData.getServiceTVByStreamId(catchup.epgStreamId.epgStreamId)
+        if (CONFIG.app.brand == "fotelka"){
+          if(serviceTV){
+            var channelId = serviceTV.id;
+            // src = cdnServers+"/"+year+"/"+month+"/"+day+"/"+channelId+"/"+eventId+"/screenshot.jpg";
+            console.log(channelId);
+          }
+        }
+        else if (event.imageUrl != null || event.imageUrl != "null" || event.imageUrl != "") {
           src = event.imageUrl
         }
         else if (event.imageUrl == null || event.imageUrl == "null" || event.imageUrl == "") {
@@ -1227,19 +1239,26 @@ Scene_Home = (function (Scene) {
     },
 
     getHTMLRowChannel: function (row, title, isBouquet) {
+      var headingStyle;
+      if (CONFIG.app.brand === "supercabo") {
+        headingStyle = "style='width: 15em; border-top: 2px solid; border-bottom: 2px solid; border-right: 2px solid; border-radius: 0px 15px 15px 0px; border-color:orange'";
+      }
+
       var html = '<div class="col-sm-12 channels-div" data-description="' + row.description + '">'
-        + '<h4 class="heading">' + title + '</h4>'
+        + '<h4 class="heading" ' + headingStyle + '>' + title + '</h4>'
         + '<div class="horizontal-slide">';
 
-      var style = "";
+      // Identifica el diseño basado en customData
+      var designType = row.customData ? row.customData : 'default';
+
       row.items.forEach(function (channel) {
-        style = "";
-        if (channel.backgroundColor != null && typeof channel.backgroundColor != 'undefined') {
-          style = " background-color: #" + channel.backgroundColor;
-        }
-        html += '<div class="channel-video focusable channel-style" data-id="' + channel.id + '" data-type="service" style="' + style + '">'
-          + '<img class="img-style" src="' + channel.img + '" onerror="imgOnError(this)" alt="">'
-          + '</div>';
+          style = "";
+          if (channel.backgroundColor != null && typeof channel.backgroundColor != 'undefined') {
+            style = " background-color: #" + channel.backgroundColor;
+          }
+          html += '<div class="channel-video focusable channel-style" data-id="' + channel.id + '" data-type="service" style="' + style + '">'
+            + '<img class="img-style" src="' + channel.img + '" onerror="imgOnError(this)" alt="">'
+            + '</div>';
       });
       html += '</div>'
         + '</div>';
